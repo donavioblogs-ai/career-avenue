@@ -16,7 +16,7 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-export function SearchBar({ initial }: { initial?: { q?: string; local?: string; area?: string } }) {
+export function SearchBar({ initial }: { initial?: { q?: string | undefined; local?: string | undefined; area?: string | undefined } }) {
   const nav = useNavigate();
   const [q, setQ] = useState(initial?.q ?? "");
   const [local, setLocal] = useState(initial?.local ?? "");

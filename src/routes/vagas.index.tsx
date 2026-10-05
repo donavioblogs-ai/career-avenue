@@ -3,7 +3,7 @@ import { Header, Footer, JobCard } from "@/components/site";
 import { JOBS } from "@/lib/jobs";
 import { SearchBar } from "./index";
 
-type S = { q?: string; local?: string; area?: string };
+type S = { q?: string | undefined; local?: string | undefined; area?: string | undefined };
 
 export const Route = createFileRoute("/vagas/")({
   validateSearch: (s: Record<string, unknown>): S => ({
