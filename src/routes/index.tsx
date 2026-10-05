@@ -24,7 +24,7 @@ export function SearchBar({ initial }: { initial?: { q?: string; local?: string;
   const sel = "rounded-lg border bg-background px-3 py-3 text-sm text-foreground";
   return (
     <form
-      onSubmit={(e) => { e.preventDefault(); nav({ to: "/vagas", search: { q, local, area } }); }}
+      onSubmit={(e) => { e.preventDefault(); nav({ to: "/vagas", search: { q: q || undefined, local: local || undefined, area: area || undefined } }); }}
       className="grid gap-2 rounded-2xl bg-card p-3 shadow-xl md:grid-cols-[2fr_1fr_1fr_auto]"
     >
       <input className={sel} placeholder="O que procura" value={q} onChange={(e) => setQ(e.target.value)} />
@@ -82,7 +82,7 @@ function Index() {
             <h2 className="font-display text-3xl font-extrabold">Vagas de emprego</h2>
             <p className="text-muted-foreground">As oportunidades mais recentes, verificadas antes de irem para o ar.</p>
           </div>
-          <Link to="/vagas" className="text-sm font-semibold text-primary hover:underline">Ver todas →</Link>
+          <Link to="/vagas" search={{}} className="text-sm font-semibold text-primary hover:underline">Ver todas →</Link>
         </div>
         <div className="mt-6 grid gap-3">
           {JOBS.slice(0, 6).map((j) => <JobCard key={j.slug} job={j} />)}

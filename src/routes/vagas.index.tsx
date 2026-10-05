@@ -7,9 +7,9 @@ type S = { q?: string; local?: string; area?: string };
 
 export const Route = createFileRoute("/vagas/")({
   validateSearch: (s: Record<string, unknown>): S => ({
-    q: (s.q as string) || undefined,
-    local: (s.local as string) || undefined,
-    area: (s.area as string) || undefined,
+    q: (s['q'] as string) || undefined,
+    local: (s['local'] as string) || undefined,
+    area: (s['area'] as string) || undefined,
   }),
   head: () => ({
     meta: [

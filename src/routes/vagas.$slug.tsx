@@ -32,7 +32,7 @@ function Detail() {
       <Header />
       <div className="mx-auto mt-10 grid max-w-6xl gap-8 px-4 md:grid-cols-[2fr_1fr]">
         <article>
-          <Link to="/vagas" className="text-sm text-primary hover:underline">← Voltar às vagas</Link>
+          <Link to="/vagas" search={{}} className="text-sm text-primary hover:underline">← Voltar às vagas</Link>
           <p className="mt-4 text-muted-foreground">{job.company}</p>
           <h1 className="font-display text-3xl font-extrabold">{job.title}</h1>
           <h2 className="mt-8 text-lg font-bold">Descrição da vaga</h2>

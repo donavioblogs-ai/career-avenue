@@ -11,7 +11,7 @@ export function Header() {
         </Link>
         <nav className="flex gap-6 text-sm font-medium">
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Início</Link>
-          <Link to="/vagas" activeProps={{ className: "text-primary" }}>Vagas de emprego</Link>
+          <Link to="/vagas" search={{}} activeProps={{ className: "text-primary" }}>Vagas de emprego</Link>
         </nav>
       </div>
     </header>
