@@ -1,10 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Search } from "lucide-react";
 import { Header, Footer, JobCard } from "@/components/site";
-import { JOBS, LOCATIONS, AREAS } from "@/lib/jobs";
+import { jobsQuery, settingsQuery, LOCATIONS, areasOf } from "@/lib/jobs";
 
 export const Route = createFileRoute("/")({
+  loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(jobsQuery), context.queryClient.ensureQueryData(settingsQuery)]),
   head: () => ({
     meta: [
       { title: "portalvagas — Vagas de emprego em Moçambique" },
@@ -16,7 +18,9 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-export function SearchBar({ initial }: { initial?: { q?: string | undefined; local?: string | undefined; area?: string | undefined } }) {
+type Init = { q?: string | undefined; local?: string | undefined; area?: string | undefined };
+
+export function SearchBar({ initial, areas }: { initial?: Init; areas: string[] }) {
   const nav = useNavigate();
   const [q, setQ] = useState(initial?.q ?? "");
   const [local, setLocal] = useState(initial?.local ?? "");
@@ -34,7 +38,7 @@ export function SearchBar({ initial }: { initial?: { q?: string | undefined; loc
       </select>
       <select className={sel} value={area} onChange={(e) => setArea(e.target.value)}>
         <option value="">Todas as áreas</option>
-        {AREAS.map((a) => <option key={a}>{a}</option>)}
+        {areas.map((a) => <option key={a}>{a}</option>)}
       </select>
       <button className="flex items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 font-semibold text-primary-foreground hover:opacity-90">
         <Search className="h-4 w-4" /> Pesquisar
@@ -44,10 +48,13 @@ export function SearchBar({ initial }: { initial?: { q?: string | undefined; loc
 }
 
 function Index() {
-  const stats = [
-    [JOBS.length, "Vagas abertas"],
-    [AREAS.length, "Áreas profissionais"],
-    [LOCATIONS.length, "Locais cobertos"],
+  const { data: jobs } = useSuspenseQuery(jobsQuery);
+  const { data: s } = useSuspenseQuery(settingsQuery);
+  const areas = areasOf(jobs);
+  const stats: [string | number, string][] = [
+    [jobs.length, "Vagas abertas"],
+    [areas.length, "Áreas profissionais"],
+    [new Set(jobs.map((j) => j.location)).size, "Locais cobertos"],
     ["24h", "Actualização diária"],
   ];
   return (
@@ -55,16 +62,10 @@ function Index() {
       <Header />
       <section className="bg-primary text-primary-foreground">
         <div className="mx-auto max-w-6xl px-4 py-20">
-          <p className="inline-block rounded-full bg-primary-foreground/15 px-3 py-1 text-sm">
-            <strong>{JOBS.length}</strong> vagas abertas agora
-          </p>
-          <h1 className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight md:text-6xl">
-            O seu próximo emprego está a um clique.
-          </h1>
-          <p className="mt-4 max-w-2xl opacity-85">
-            Reunimos todos os dias vagas de emprego, estágios e consultorias em Moçambique e no resto do mundo.
-          </p>
-          <div className="mt-8"><SearchBar /></div>
+          <p className="inline-block rounded-full bg-primary-foreground/15 px-3 py-1 text-sm"><strong>{jobs.length}</strong> vagas abertas agora</p>
+          <h1 className="mt-5 max-w-3xl font-display text-4xl font-extrabold leading-tight md:text-6xl">{s?.hero_title}</h1>
+          <p className="mt-4 max-w-2xl opacity-85">{s?.hero_subtitle}</p>
+          <div className="mt-8"><SearchBar areas={areas} /></div>
         </div>
       </section>
       <section className="mx-auto -mt-8 grid max-w-6xl grid-cols-2 gap-4 px-4 md:grid-cols-4">
@@ -85,7 +86,8 @@ function Index() {
           <Link to="/vagas" search={{}} className="text-sm font-semibold text-primary hover:underline">Ver todas →</Link>
         </div>
         <div className="mt-6 grid gap-3">
-          {JOBS.slice(0, 6).map((j) => <JobCard key={j.slug} job={j} />)}
+          {jobs.slice(0, 8).map((j) => <JobCard key={j.id} job={j} />)}
+          {!jobs.length && <p className="py-10 text-center text-muted-foreground">Ainda não há vagas publicadas.</p>}
         </div>
       </section>
       <Footer />
