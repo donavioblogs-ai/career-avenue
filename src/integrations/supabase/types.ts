@@ -14,16 +14,124 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      jobs: {
+        Row: {
+          apply_url: string | null
+          area: string
+          company: string
+          company_logo: string | null
+          created_at: string
+          deadline: string | null
+          description: string
+          how_to_apply: string
+          id: string
+          location: string
+          published: boolean
+          salary: string | null
+          slug: string
+          title: string
+          type: string
+          views: number
+        }
+        Insert: {
+          apply_url?: string | null
+          area: string
+          company: string
+          company_logo?: string | null
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          how_to_apply?: string
+          id?: string
+          location: string
+          published?: boolean
+          salary?: string | null
+          slug: string
+          title: string
+          type?: string
+          views?: number
+        }
+        Update: {
+          apply_url?: string | null
+          area?: string
+          company?: string
+          company_logo?: string | null
+          created_at?: string
+          deadline?: string | null
+          description?: string
+          how_to_apply?: string
+          id?: string
+          location?: string
+          published?: boolean
+          salary?: string | null
+          slug?: string
+          title?: string
+          type?: string
+          views?: number
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          contact_email: string | null
+          footer_text: string
+          hero_subtitle: string
+          hero_title: string
+          id: number
+          site_name: string
+        }
+        Insert: {
+          contact_email?: string | null
+          footer_text?: string
+          hero_subtitle?: string
+          hero_title?: string
+          id?: number
+          site_name?: string
+        }
+        Update: {
+          contact_email?: string | null
+          footer_text?: string
+          hero_subtitle?: string
+          hero_title?: string
+          id?: number
+          site_name?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      increment_job_view: { Args: { _slug: string }; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +258,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+    },
   },
 } as const
