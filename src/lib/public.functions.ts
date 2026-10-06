@@ -20,7 +20,7 @@ function pub() {
 const COLS = "id, slug, title, company, company_logo, location, type, area, salary, deadline, description, how_to_apply, apply_url, created_at";
 
 export const listJobs = createServerFn({ method: "GET" }).handler(async () => {
-  const { data, error } = await pub().from("jobs").select(COLS).eq("published", true).order("created_at", { ascending: false });
+  const { data, error } = await pub().from("jobs").select(COLS).eq("published", true).order("created_at", { ascending: false }).order("id");
   if (error) throw new Error(error.message);
   return data ?? [];
 });
