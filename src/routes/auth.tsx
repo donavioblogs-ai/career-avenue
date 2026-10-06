@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/site";
 
 export const Route = createFileRoute("/auth")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Entrar — portalvagas" }, { name: "description", content: "Acesso ao painel do portalvagas." }, { property: "og:title", content: "Entrar — portalvagas" }, { property: "og:description", content: "Acesso ao painel." }, { name: "robots", content: "noindex" }] }),
   component: AuthPage,
 });
@@ -34,8 +35,8 @@ function AuthPage() {
       <div className="mx-auto mt-16 max-w-sm rounded-2xl border bg-card p-8">
         <h1 className="font-display text-2xl font-extrabold">{mode === "in" ? "Entrar no painel" : "Criar conta"}</h1>
         <form onSubmit={submit} className="mt-6 space-y-3">
-          <input className={inp} type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input className={inp} type="password" required minLength={6} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input className={inp} aria-label="Email" type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input className={inp} aria-label="Senha" type="password" required minLength={6} placeholder="Senha" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button disabled={busy} className="w-full rounded-lg bg-primary py-3 font-semibold text-primary-foreground disabled:opacity-50">{mode === "in" ? "Entrar" : "Criar conta"}</button>
         </form>
         {msg && <p className="mt-3 text-sm text-muted-foreground">{msg}</p>}

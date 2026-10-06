@@ -3,7 +3,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/configuracoes")({ component: SettingsPage });
+export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
+  staticData: { sitemap: false }, component: SettingsPage });
 
 const FIELDS = [
   ["site_name", "Nome do site", false],

@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/")({ component: Overview });
+export const Route = createFileRoute("/_authenticated/admin/")({
+  staticData: { sitemap: false }, component: Overview });
 
 function Overview() {
   const { data: jobs = [] } = useQuery({

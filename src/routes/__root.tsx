@@ -74,14 +74,15 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "portalvagas" },
+      { title: "portalvagas — Vagas de emprego em Moçambique" },
       { name: "description", content: "Vagas de emprego em Moçambique" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "portalvagas" },
+      { property: "og:title", content: "portalvagas — Vagas de emprego em Moçambique" },
       { property: "og:description", content: "Vagas de emprego em Moçambique" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
