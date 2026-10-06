@@ -14,7 +14,22 @@ export const Route = createFileRoute("/vagas/$slug")({
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Vaga não encontrada" }, { name: "robots", content: "noindex" }] };
     const t = `${loaderData.job.title} — portalvagas`;
-    const d = loaderData.job.description.slice(0, 160);
+    const j = loaderData.job;
+    const d = j.description.slice(0, 160);
+    const typeMap: Record<string, string> = { "Tempo inteiro": "FULL_TIME", "Full-time": "FULL_TIME", "Tempo parcial": "PART_TIME", "Estágio": "INTERN", "Consultoria": "CONTRACTOR", "Voluntariado": "VOLUNTEER" };
+    const url = `https://career-avenue.lovable.app/vagas/${j.slug}`;
+    const ld: Record<string, unknown> = {
+      "@context": "https://schema.org",
+      "@type": "JobPosting",
+      title: j.title,
+      description: j.description,
+      datePosted: j.created_at,
+      hiringOrganization: { "@type": "Organization", name: j.company, ...(j.company_logo ? { logo: j.company_logo } : {}) },
+      jobLocation: { "@type": "Place", address: { "@type": "PostalAddress", addressRegion: j.location, addressCountry: "MZ" } },
+      ...(typeMap[j.type] ? { employmentType: typeMap[j.type] } : {}),
+      ...(j.deadline ? { validThrough: `${j.deadline}T23:59:59` } : {}),
+      url,
+    };
     return {
       meta: [
         { title: t },
@@ -22,7 +37,10 @@ export const Route = createFileRoute("/vagas/$slug")({
         { property: "og:title", content: t },
         { property: "og:description", content: d },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
       ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [{ type: "application/ld+json", children: JSON.stringify(ld) }],
     };
   },
   notFoundComponent: () => (
