@@ -5,6 +5,7 @@ import { getJob, registerView } from "@/lib/public.functions";
 import { fmtDate, timeAgo } from "@/lib/jobs";
 
 export const Route = createFileRoute("/vagas/$slug")({
+  staticData: { sitemap: true },
   loader: async ({ params }) => {
     const job = await getJob({ data: { slug: params.slug } });
     if (!job) throw notFound();

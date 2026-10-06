@@ -6,6 +6,7 @@ import { Header, Footer, JobCard } from "@/components/site";
 import { jobsQuery, settingsQuery, LOCATIONS, areasOf } from "@/lib/jobs";
 
 export const Route = createFileRoute("/")({
+  staticData: { sitemap: true },
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(jobsQuery), context.queryClient.ensureQueryData(settingsQuery)]),
   head: () => ({
     meta: [
@@ -31,12 +32,12 @@ export function SearchBar({ initial, areas }: { initial?: Init; areas: string[] 
       onSubmit={(e) => { e.preventDefault(); nav({ to: "/vagas", search: { q: q || undefined, local: local || undefined, area: area || undefined } }); }}
       className="grid gap-2 rounded-2xl bg-card p-3 shadow-xl md:grid-cols-[2fr_1fr_1fr_auto]"
     >
-      <input className={sel} placeholder="O que procura" value={q} onChange={(e) => setQ(e.target.value)} />
-      <select className={sel} value={local} onChange={(e) => setLocal(e.target.value)}>
+      <input aria-label="O que procura" className={sel} placeholder="O que procura" value={q} onChange={(e) => setQ(e.target.value)} />
+      <select aria-label="Local" className={sel} value={local} onChange={(e) => setLocal(e.target.value)}>
         <option value="">Qualquer local</option>
         {LOCATIONS.map((l) => <option key={l}>{l}</option>)}
       </select>
-      <select className={sel} value={area} onChange={(e) => setArea(e.target.value)}>
+      <select aria-label="Área profissional" className={sel} value={area} onChange={(e) => setArea(e.target.value)}>
         <option value="">Todas as áreas</option>
         {areas.map((a) => <option key={a}>{a}</option>)}
       </select>

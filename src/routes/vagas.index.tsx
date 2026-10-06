@@ -7,6 +7,7 @@ import { SearchBar } from "./index";
 type S = { q?: string | undefined; local?: string | undefined; area?: string | undefined };
 
 export const Route = createFileRoute("/vagas/")({
+  staticData: { sitemap: true },
   validateSearch: (s: Record<string, unknown>): S => ({
     q: (s["q"] as string) || undefined,
     local: (s["local"] as string) || undefined,

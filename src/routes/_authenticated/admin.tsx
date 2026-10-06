@@ -4,6 +4,7 @@ import { LayoutDashboard, Briefcase, Settings, LogOut, Globe } from "lucide-reac
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin")({
+  staticData: { sitemap: false },
   head: () => ({ meta: [{ title: "Painel — portalvagas" }, { name: "robots", content: "noindex" }] }),
   component: AdminLayout,
 });
