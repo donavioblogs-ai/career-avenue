@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { MapPin, Clock, Briefcase } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -18,7 +18,7 @@ export function useSession() {
 
 export function Header() {
   const signedIn = useSession();
-  const { data: s } = useQuery(settingsQuery);
+  const { data: s } = useSuspenseQuery(settingsQuery);
   const name = s?.site_name?.toLowerCase() === "portalvagas" ? "PortalVagas" : s?.site_name || "PortalVagas";
   return (
     <header className="border-b bg-card">
@@ -38,7 +38,7 @@ export function Header() {
 }
 
 export function Footer() {
-  const { data: s } = useQuery(settingsQuery);
+  const { data: s } = useSuspenseQuery(settingsQuery);
   return (
     <footer className="mt-20 bg-hero text-hero-foreground">
       <div className="mx-auto max-w-6xl px-4 py-10 text-sm">
