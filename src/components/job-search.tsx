@@ -4,7 +4,7 @@ import { ArrowRight, Search, MapPin, LayoutGrid } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LOCATIONS } from "@/lib/jobs";
 
-type InitialSearch = { q?: string; local?: string; area?: string };
+type InitialSearch = { q?: string | undefined; local?: string | undefined; area?: string | undefined };
 
 export function SearchBar({ initial, areas }: { initial?: InitialSearch; areas: string[] }) {
   const navigate = useNavigate();

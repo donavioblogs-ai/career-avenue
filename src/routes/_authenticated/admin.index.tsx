@@ -3,7 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  staticData: { sitemap: false }, component: Overview });
+  staticData: { sitemap: false },
+  head: () => ({ meta: [{ title: "Visão geral — PortalVagas" }, { name: "description", content: "Resumo das vagas e visualizações do PortalVagas." }, { property: "og:title", content: "Visão geral — PortalVagas" }, { property: "og:description", content: "Resumo das vagas e visualizações do PortalVagas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  component: Overview });
 
 function Overview() {
   const { data: jobs = [] } = useQuery({

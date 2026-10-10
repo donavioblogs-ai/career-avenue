@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_authenticated/admin/configuracoes")({
-  staticData: { sitemap: false }, component: SettingsPage });
+  staticData: { sitemap: false },
+  head: () => ({ meta: [{ title: "Configurações — PortalVagas" }, { name: "description", content: "Configurações de nome, textos e contacto do PortalVagas." }, { property: "og:title", content: "Configurações — PortalVagas" }, { property: "og:description", content: "Configurações de nome, textos e contacto do PortalVagas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  component: SettingsPage });
 
 const FIELDS = [
   ["site_name", "Nome do site", false],

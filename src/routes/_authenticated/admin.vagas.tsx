@@ -10,7 +10,9 @@ type Row = Database["public"]["Tables"]["jobs"]["Row"];
 type Form = Omit<Row, "id" | "views" | "created_at" | "slug">;
 
 export const Route = createFileRoute("/_authenticated/admin/vagas")({
-  staticData: { sitemap: false }, component: AdminJobs });
+  staticData: { sitemap: false },
+  head: () => ({ meta: [{ title: "Gerir vagas — PortalVagas" }, { name: "description", content: "Publicação e gestão das vagas do PortalVagas." }, { property: "og:title", content: "Gerir vagas — PortalVagas" }, { property: "og:description", content: "Publicação e gestão das vagas do PortalVagas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
+  component: AdminJobs });
 
 const empty: Form = { title: "", company: "", company_logo: "", location: "Maputo Cidade", type: "Tempo inteiro", area: "", salary: "", deadline: "", description: "", how_to_apply: "", apply_url: "", published: true };
 

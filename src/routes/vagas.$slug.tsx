@@ -13,7 +13,7 @@ export const Route = createFileRoute("/vagas/$slug")({
   },
   head: ({ loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Vaga não encontrada" }, { name: "robots", content: "noindex" }] };
-    const t = `${loaderData.job.title} — portalvagas`;
+    const t = `${loaderData.job.title} — PortalVagas`;
     const j = loaderData.job;
     const d = j.description.slice(0, 160);
     const typeMap: Record<string, string> = { "Tempo inteiro": "FULL_TIME", "Full-time": "FULL_TIME", "Tempo parcial": "PART_TIME", "Estágio": "INTERN", "Consultoria": "CONTRACTOR", "Voluntariado": "VOLUNTEER" };
@@ -37,6 +37,7 @@ export const Route = createFileRoute("/vagas/$slug")({
         { property: "og:title", content: t },
         { property: "og:description", content: d },
         { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
       ],
       links: [{ rel: "canonical", href: url }],

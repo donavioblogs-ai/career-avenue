@@ -5,7 +5,7 @@ import { Header } from "@/components/site";
 
 export const Route = createFileRoute("/auth")({
   staticData: { sitemap: false },
-  head: () => ({ meta: [{ title: "Entrar — portalvagas" }, { name: "description", content: "Acesso ao painel do portalvagas." }, { property: "og:title", content: "Entrar — portalvagas" }, { property: "og:description", content: "Acesso ao painel." }, { name: "robots", content: "noindex" }] }),
+  head: () => ({ meta: [{ title: "Entrar — PortalVagas" }, { name: "description", content: "Acesso ao painel do PortalVagas." }, { property: "og:title", content: "Entrar — PortalVagas" }, { property: "og:description", content: "Acesso ao painel do PortalVagas." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { name: "robots", content: "noindex" }] }),
   component: AuthPage,
 });
 
