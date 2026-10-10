@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MapPin, Clock, Briefcase } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { settingsQuery, timeAgo, fmtDate, type Job } from "@/lib/jobs";
+import { Button } from "@/components/ui/button";
 
 export function useSession() {
   const [signedIn, setSignedIn] = useState(false);
@@ -18,17 +19,18 @@ export function useSession() {
 export function Header() {
   const signedIn = useSession();
   const { data: s } = useQuery(settingsQuery);
-  const name = s?.site_name ?? "portalvagas";
+  const name = s?.site_name?.toLowerCase() === "portalvagas" ? "PortalVagas" : s?.site_name || "PortalVagas";
   return (
     <header className="border-b bg-card">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <div className="site-header mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4">
         <Link to="/" className="font-display text-2xl font-extrabold text-primary">{name}</Link>
-        <nav className="flex items-center gap-6 text-sm font-medium">
+        <nav aria-label="Navegação principal" className="flex flex-wrap items-center justify-end gap-x-5 gap-y-3 text-sm font-medium">
           <Link to="/" activeOptions={{ exact: true }} activeProps={{ className: "text-primary" }}>Início</Link>
           <Link to="/vagas" search={{}} activeProps={{ className: "text-primary" }}>Vagas de emprego</Link>
-          <Link to={signedIn ? "/admin" : "/auth"} className="rounded-md border px-3 py-1.5 hover:border-primary">
+          <Button asChild variant="outline"><Link to={signedIn ? "/admin" : "/auth"}>
             {signedIn ? "Painel" : "Entrar"}
-          </Link>
+          </Link></Button>
+          <Button asChild className="hidden sm:inline-flex"><Link to={signedIn ? "/admin/vagas" : "/auth"}>Publicar vaga</Link></Button>
         </nav>
       </div>
     </header>
@@ -38,12 +40,12 @@ export function Header() {
 export function Footer() {
   const { data: s } = useQuery(settingsQuery);
   return (
-    <footer className="mt-20 bg-primary text-primary-foreground">
+    <footer className="mt-20 bg-hero text-hero-foreground">
       <div className="mx-auto max-w-6xl px-4 py-10 text-sm">
-        <p className="font-display text-xl font-extrabold">{s?.site_name ?? "portalvagas"}</p>
+        <p className="font-display text-xl font-extrabold">{s?.site_name?.toLowerCase() === "portalvagas" ? "PortalVagas" : s?.site_name || "PortalVagas"}</p>
         <p className="mt-2 opacity-80">{s?.footer_text}</p>
         {s?.contact_email && <p className="mt-2 opacity-80">Contacto: {s.contact_email}</p>}
-        <p className="mt-6 opacity-60">© {new Date().getFullYear()} {s?.site_name ?? "portalvagas"}. Todos os direitos reservados.</p>
+        <p className="mt-6 opacity-60">© {new Date().getFullYear()} {s?.site_name?.toLowerCase() === "portalvagas" ? "PortalVagas" : s?.site_name || "PortalVagas"}. Todos os direitos reservados.</p>
       </div>
     </footer>
   );
@@ -51,17 +53,17 @@ export function Footer() {
 
 export function JobCard({ job }: { job: Job }) {
   return (
-    <article className="flex flex-col gap-3 rounded-xl border bg-card p-5 transition hover:border-primary hover:shadow-md sm:flex-row sm:items-center">
+    <article className="job-row">
       {job.company_logo ? (
-        <img src={job.company_logo} alt={job.company} className="h-14 w-14 shrink-0 rounded-lg border object-contain p-1" />
+        <img src={job.company_logo} alt={job.company} className="job-logo" loading="lazy" />
       ) : (
-        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg bg-secondary font-display text-lg font-bold text-primary">
+        <div className="job-logo flex items-center justify-center bg-secondary font-display text-lg font-bold text-primary">
           {job.company.slice(0, 2).toUpperCase()}
         </div>
       )}
-      <div className="flex-1">
+      <div className="min-w-0 flex-1">
         <p className="text-sm text-muted-foreground">{job.company}</p>
-        <h3 className="font-semibold hover:text-primary">
+        <h3 className="mt-1 text-base font-bold leading-snug hover:text-primary">
           <Link to="/vagas/$slug" params={{ slug: job.slug }}>{job.title}</Link>
         </h3>
         <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
@@ -71,7 +73,7 @@ export function JobCard({ job }: { job: Job }) {
           {job.salary && <span className="font-medium text-foreground">{job.salary}</span>}
         </div>
       </div>
-      <div className="text-xs text-muted-foreground sm:text-right">
+      <div className="job-dates text-xs leading-6 text-muted-foreground">
         <p>{timeAgo(job.created_at)}</p>
         {job.deadline && <p className="font-medium text-destructive">Termina {fmtDate(job.deadline)}</p>}
       </div>

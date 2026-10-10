@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Header, Footer, JobCard } from "@/components/site";
 import { jobsQuery, settingsQuery, areasOf } from "@/lib/jobs";
-import { SearchBar } from "./index";
+import { SearchBar } from "@/components/job-search";
 
 type S = { q?: string | undefined; local?: string | undefined; area?: string | undefined };
 
@@ -16,10 +16,12 @@ export const Route = createFileRoute("/vagas/")({
   loader: ({ context }) => Promise.all([context.queryClient.ensureQueryData(jobsQuery), context.queryClient.ensureQueryData(settingsQuery)]),
   head: () => ({
     meta: [
-      { title: "Vagas de emprego — portalvagas" },
+      { title: "Vagas de emprego — PortalVagas" },
       { name: "description", content: "Pesquise todas as vagas de emprego, estágios e consultorias por local e área profissional." },
-      { property: "og:title", content: "Vagas de emprego — portalvagas" },
+      { property: "og:title", content: "Vagas de emprego — PortalVagas" },
       { property: "og:description", content: "Todas as vagas abertas em Moçambique." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Vagas,
@@ -37,7 +39,7 @@ function Vagas() {
   return (
     <>
       <Header />
-      <section className="bg-primary py-12 text-primary-foreground">
+      <section className="bg-hero py-12 text-hero-foreground">
         <div className="mx-auto max-w-6xl px-4">
           <h1 className="mb-6 font-display text-4xl font-extrabold">Vagas de emprego</h1>
           <SearchBar key={JSON.stringify(s)} initial={s} areas={areasOf(jobs)} />
@@ -45,7 +47,7 @@ function Vagas() {
       </section>
       <section className="mx-auto mt-10 max-w-6xl px-4">
         <p className="mb-4 text-sm text-muted-foreground"><strong>{list.length}</strong> vagas encontradas</p>
-        <div className="grid gap-3">
+        <div className="job-list">
           {list.map((j) => <JobCard key={j.id} job={j} />)}
           {!list.length && <p className="py-10 text-center text-muted-foreground">Nenhuma vaga encontrada.</p>}
         </div>

@@ -34,6 +34,9 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-hero-muted: var(--hero-muted);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -62,14 +65,18 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.985 0.005 150);
+  --radius: 0.5rem;
+  --background: oklch(1 0 0);
+  --hero: oklch(0.2 0.035 235);
+  --hero-foreground: oklch(0.99 0 0);
+  --hero-muted: oklch(0.74 0.025 230);
+  --shadow-elevated: 0 12px 28px oklch(0.18 0.02 240 / 12%);
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.42 0.14 155);
+  --primary: oklch(0.55 0.15 158);
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.95 0.03 155);
   --secondary-foreground: oklch(0.208 0.042 265.755);
@@ -99,6 +106,9 @@
 
 .dark {
   --background: oklch(0.129 0.042 264.695);
+  --hero: oklch(0.17 0.03 235);
+  --hero-foreground: oklch(0.99 0 0);
+  --hero-muted: oklch(0.74 0.025 230);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
@@ -143,3 +153,36 @@
   }
 }
 @theme inline { --font-display: "Plus Jakarta Sans", sans-serif; --font-sans: "DM Sans", sans-serif; }
+
+.job-search { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr) auto; gap: 8px; padding: 8px; background: var(--card); color: var(--card-foreground); border-radius: 8px; box-shadow: var(--shadow-elevated); }
+.search-field { display: flex; align-items: center; gap: 10px; padding: 4px 10px; min-width: 0; border-right: 1px solid var(--border); }
+.search-field > svg { width: 18px; height: 18px; flex-shrink: 0; color: var(--muted-foreground); }
+.search-field > span { flex: 1; min-width: 0; }
+.search-label { display: block; color: var(--muted-foreground); font-size: 10px; text-transform: uppercase; margin-bottom: 4px; }
+.search-field input, .search-field select { width: 100%; min-width: 0; font-size: 13px; background: var(--card); color: var(--card-foreground); outline: none; }
+.search-field input::placeholder { color: var(--muted-foreground); }
+.search-field:focus-within { border-radius: 4px; outline: 2px solid var(--ring); }
+.vacancy-status { display: inline-flex; align-items: center; gap: 9px; border: 1px solid color-mix(in oklch, var(--hero-foreground) 15%, transparent); padding: 9px 14px; border-radius: 30px; font-size: 12px; }
+.stats-strip { position: relative; width: calc(100% - 32px); border: 1px solid var(--border); border-radius: 8px; background: var(--card); box-shadow: var(--shadow-elevated); }
+.stats-strip > div + div { border-left: 1px solid var(--border); }
+.job-list { display: flex; flex-direction: column; border-top: 1px solid var(--border); }
+.job-row { display: flex; align-items: center; gap: 20px; padding: 23px 8px; border-bottom: 1px solid var(--border); transition: background 150ms; }
+.job-row:hover { background: var(--muted); }
+.job-logo { width: 64px; height: 64px; flex-shrink: 0; border: 1px solid var(--border); border-radius: 6px; object-fit: contain; padding: 6px; }
+.job-dates { flex-shrink: 0; text-align: right; }
+.section-eyebrow { color: var(--primary); font-size: 12px; text-transform: uppercase; font-weight: 700; }
+@media (max-width: 767px) {
+  .site-header { align-items: flex-start; }
+  .site-header > a { font-size: 20px; }
+  .site-header nav { gap: 10px; font-size: 12px; }
+  .job-search { grid-template-columns: 1fr 1fr; }
+  .search-field:first-child { grid-column: 1 / -1; border-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+  .job-search > button { grid-column: 1 / -1; }
+  .search-field { padding: 10px 5px; }
+  .stats-strip > div:nth-child(3) { border-left: 0; }
+  .stats-strip > div:nth-child(n+3) { border-top: 1px solid var(--border); }
+  .job-row { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; gap: 12px; padding: 20px 0; }
+  .job-logo { width: 48px; height: 48px; }
+  .job-dates { grid-column: 2; text-align: left; display: flex; flex-wrap: wrap; gap: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { .job-row { transition: none; } }
