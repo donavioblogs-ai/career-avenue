@@ -1,10 +1,18 @@
-import { createServerFn } from "@tanstack/react-start";
+import { createServerFn, createServerOnlyFn } from "@tanstack/react-start";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
+import { resolvePublicBackendConfig } from "./public-backend-config";
 
-function pub() {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"]!;
-  return createClient<Database>(process.env["SUPABASE_URL"]!, key, {
+const pub = createServerOnlyFn(() => {
+  const { url, key } = resolvePublicBackendConfig({
+    SUPABASE_URL: process.env["SUPABASE_URL"],
+    SUPABASE_PUBLISHABLE_KEY: process.env["SUPABASE_PUBLISHABLE_KEY"],
+    SUPABASE_ANON_KEY: process.env["SUPABASE_ANON_KEY"],
+    VITE_SUPABASE_URL: import.meta.env["VITE_SUPABASE_URL"],
+    VITE_SUPABASE_PUBLISHABLE_KEY: import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"],
+    VITE_SUPABASE_ANON_KEY: import.meta.env["VITE_SUPABASE_ANON_KEY"],
+  });
+  return createClient<Database>(url, key, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: {
       fetch: (input, init) => {
@@ -15,7 +23,7 @@ function pub() {
       },
     },
   });
-}
+});
 
 const COLS = "id, slug, title, company, company_logo, location, type, area, salary, deadline, description, how_to_apply, apply_url, created_at";
 
