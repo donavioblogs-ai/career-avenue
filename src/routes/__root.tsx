@@ -79,10 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "portalvagas — Vagas de emprego em Moçambique" },
+      { title: "PortalVagas — Vagas de emprego em Moçambique" },
       { name: "description", content: "Vagas de emprego em Moçambique" },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "portalvagas — Vagas de emprego em Moçambique" },
+      { property: "og:title", content: "PortalVagas — Vagas de emprego em Moçambique" },
       { property: "og:description", content: "Vagas de emprego em Moçambique" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -105,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-MZ">
       <head>
         <HeadContent />
       </head>
